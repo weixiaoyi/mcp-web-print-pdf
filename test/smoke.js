@@ -75,9 +75,20 @@ const httpServer = createServer((req, res) => {
 await new Promise((resolve) => httpServer.listen(0, "127.0.0.1", resolve));
 const baseUrl = `http://127.0.0.1:${httpServer.address().port}`;
 
+// 默认跑本地源码；也可以用 MCP_COMMAND / MCP_ARGS / MCP_CWD 指向线上包：
+//   MCP_COMMAND=npx MCP_ARGS="-y mcp-web-print-pdf@0.2.0" MCP_CWD=C:/Users/admin node test/smoke.js
+const command = process.env.MCP_COMMAND || process.execPath;
+const args = process.env.MCP_ARGS
+    ? process.env.MCP_ARGS.split(/\s+/).filter(Boolean)
+    : ["bin/mcp.js"];
+const cwd = process.env.MCP_CWD || process.cwd();
+
+console.log(`mcp: ${command} ${args.join(" ")} (cwd: ${cwd})`);
+
 const transport = new StdioClientTransport({
-    command: process.execPath,
-    args: ["bin/mcp.js"],
+    command,
+    args,
+    cwd,
     stderr: "inherit",
     // SDK 默认只透传白名单环境变量，这里把 WEBPRINT_PORT 之类一起带过去
     env: { ...process.env },
