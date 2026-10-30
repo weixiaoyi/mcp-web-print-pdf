@@ -25,13 +25,10 @@ Claude / dsh ──stdio──> mcp-web-print-pdf ──ws──> Web Print Expe
 
 ## Installation
 
-Hosts fetch it automatically via `npx -y mcp-web-print-pdf`; no global install is required.
+Nothing to install. Hosts start it via `npx -y mcp-web-print-pdf`; the first run downloads and caches
+the package.
 
-For local development:
-
-```bash
-npm install
-```
+> To pin a version, append it to the package name, for example `npx -y mcp-web-print-pdf@0.2.3`.
 
 ## Configuration
 
@@ -435,6 +432,18 @@ MCP).
 - The client-side implementation lives in the `ElctronPrintWeb` repository: message entry points under
   `electronApp/server/websocket/standard/`, option whitelists in `core/generatePdf` and
   `core/printPdf`.
+
+## Local development
+
+```bash
+git clone https://github.com/weixiaoyi/mcp-web-print-pdf.git
+cd mcp-web-print-pdf
+npm install
+npm test
+```
+
+`npm test` runs unit tests for option merging and the default action; the end-to-end smoke test is
+below.
 
 ## Local verification (works without the client)
 

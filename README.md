@@ -25,13 +25,9 @@ Claude / dsh ──stdio──> mcp-web-print-pdf ──ws──> Web打印专�
 
 ## 安装
 
-宿主会自动通过 `npx -y mcp-web-print-pdf` 拉取，不需要全局安装。
+不需要安装。宿主通过 `npx -y mcp-web-print-pdf` 启动，首次运行会自动下载并缓存。
 
-从源码开发：
-
-```bash
-npm install
-```
+> 需要固定版本时在包名后加版本号，例如 `npx -y mcp-web-print-pdf@0.2.3`。
 
 ## 配置
 
@@ -415,6 +411,17 @@ MCP 的 stdio 通道单条消息默认上限 **10MB**（SDK 的 `ReadBuffer`）�
 - stdout 是 MCP 协议通道，日志一律走 stderr。
 - 客户端侧实现见 `ElctronPrintWeb` 仓库：消息入口在 `electronApp/server/websocket/standard/`，
   参数白名单在 `core/generatePdf` 与 `core/printPdf`。
+
+## 本地开发
+
+```bash
+git clone https://github.com/weixiaoyi/mcp-web-print-pdf.git
+cd mcp-web-print-pdf
+npm install
+npm test
+```
+
+`npm test` 跑参数合并和默认 action 的单元测试；端到端冒烟见下一节。
 
 ## 本地验证（没装客户端也能跑）
 
