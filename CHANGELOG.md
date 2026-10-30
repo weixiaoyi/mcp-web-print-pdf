@@ -4,12 +4,22 @@
 
 ## [Unreleased]
 
+## [0.2.4]
+
+只有文档与元数据变化，运行时行为与 0.2.3 完全一致。
+
+### Changed
+
+- `package.json`：description 补充「静默打印 / 热敏 / 标签 / batch」等关键词，keywords 从 10 个扩到 18 个
+- README（中 / 英）：重排首屏（logo、徽章、一句话定位、「为什么用它」对比表、宿主矩阵、FAQ、目录）；
+  图片和相对链接改为绝对地址，保证在 npmjs.com 上也能正常显示
+
 ### Added
 
-- 仓库展示：logo、社交预览图（`assets/social-preview.png`）、README 徽章与「支持的宿主」矩阵
 - `llms.txt`：给 AI 检索用的项目摘要
-- GitHub Actions：`test` 工作流（Node 18 / 20 / 22 × Ubuntu，Node 20 × Windows）
-- Issue / PR 模板、`CONTRIBUTING.md`
+- `CHANGELOG.md`、`CONTRIBUTING.md`
+- 仓库资产：`assets/logo.svg`、`assets/social-preview.png`（含生成脚本）
+- GitHub Actions `test` 工作流（Node 18 / 20 / 22），Issue / PR 模板
 
 ## [0.2.3]
 

@@ -1,4 +1,4 @@
-<p align="center"><img src="assets/logo.svg" width="96" height="96" alt="mcp-web-print-pdf logo"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/weixiaoyi/mcp-web-print-pdf/master/assets/logo.svg" width="96" height="96" alt="mcp-web-print-pdf logo"></p>
 
 <h1 align="center">mcp-web-print-pdf</h1>
 
@@ -11,15 +11,15 @@
   <a href="https://www.npmjs.com/package/mcp-web-print-pdf"><img src="https://img.shields.io/npm/v/mcp-web-print-pdf?logo=npm&logoColor=white&label=npm&color=cb3837" alt="npm version"></a>
   <a href="https://www.npmjs.com/package/mcp-web-print-pdf"><img src="https://img.shields.io/npm/dm/mcp-web-print-pdf?logo=npm&logoColor=white&label=downloads&color=cb3837" alt="npm downloads"></a>
   <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-compatible-6f42c1" alt="MCP compatible"></a>
-  <a href="package.json"><img src="https://img.shields.io/badge/node-%E2%89%A518-339933?logo=node.js&logoColor=white" alt="node >=18"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/weixiaoyi/mcp-web-print-pdf?color=2b9348" alt="license MIT"></a>
+  <a href="https://github.com/weixiaoyi/mcp-web-print-pdf/blob/master/package.json"><img src="https://img.shields.io/badge/node-%E2%89%A518-339933?logo=node.js&logoColor=white" alt="node >=18"></a>
+  <a href="https://github.com/weixiaoyi/mcp-web-print-pdf/blob/master/LICENSE"><img src="https://img.shields.io/github/license/weixiaoyi/mcp-web-print-pdf?color=2b9348" alt="license MIT"></a>
   <a href="https://github.com/weixiaoyi/mcp-web-print-pdf/actions/workflows/test.yml"><img src="https://github.com/weixiaoyi/mcp-web-print-pdf/actions/workflows/test.yml/badge.svg?branch=master" alt="CI"></a>
   <a href="https://github.com/weixiaoyi/mcp-web-print-pdf/stargazers"><img src="https://img.shields.io/github/stars/weixiaoyi/mcp-web-print-pdf?style=social" alt="GitHub stars"></a>
-  <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="PRs welcome"></a>
+  <a href="https://github.com/weixiaoyi/mcp-web-print-pdf/blob/master/CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="PRs welcome"></a>
 </p>
 
 <p align="center">
-  <b>中文</b> · <a href="README_EN.md">English</a> ·
+  <b>中文</b> · <a href="https://github.com/weixiaoyi/mcp-web-print-pdf/blob/master/README_EN.md">English</a> ·
   <a href="https://webprintpdf.com/">官网</a> ·
   <a href="https://webprintpdf.com/docs/mcp-print/">接入文档</a> ·
   <a href="https://webprintpdf.com/downloadApp/">下载客户端</a>
@@ -599,12 +599,12 @@ npx @modelcontextprotocol/inspector node bin/mcp.js
 - 客户端下载：<https://webprintpdf.com/downloadApp/>
 - web-print-pdf（npm）：<https://www.npmjs.com/package/web-print-pdf>
 - 本仓库：<https://github.com/weixiaoyi/mcp-web-print-pdf>
-- 更新日志：[CHANGELOG.md](CHANGELOG.md)
-- 面向 AI 的说明：[llms.txt](llms.txt)
+- 更新日志：[CHANGELOG.md](https://github.com/weixiaoyi/mcp-web-print-pdf/blob/master/CHANGELOG.md)
+- 面向 AI 的说明：[llms.txt](https://github.com/weixiaoyi/mcp-web-print-pdf/blob/master/llms.txt)
 
 ## 贡献
 
-Issue、PR、文档纠错都欢迎，先看 [CONTRIBUTING.md](CONTRIBUTING.md)。
+Issue、PR、文档纠错都欢迎，先看 [CONTRIBUTING.md](https://github.com/weixiaoyi/mcp-web-print-pdf/blob/master/CONTRIBUTING.md)。
 
 如果这个项目帮你省了时间，点个 ⭐ 能让更多找「MCP 打印」的人看到它。
 

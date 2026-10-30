@@ -1,6 +1,6 @@
 {
   "name": "mcp-web-print-pdf",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "MCP server for Web打印专家 / web-print-pdf: let AI agents print HTML, web pages, PDFs and images to local printers — silent printing, thermal receipts, labels, batch jobs",
   "type": "module",
   "bin": {
