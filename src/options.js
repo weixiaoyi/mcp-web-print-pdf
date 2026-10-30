@@ -153,8 +153,8 @@ export const printArgsShape = {
     copies: z.number().int().min(1).max(999).optional().describe("便捷参数：份数"),
     dry_run: z
         .boolean()
-        .default(true)
-        .describe("true（默认）= 只渲染预览不出纸；false = 真正出纸。显式 extra_options.action 优先于本项"),
+        .default(false)
+        .describe("false（默认）= 真正出纸；true = 只渲染预览。显式 extra_options.action 优先于本项"),
 };
 
 /**
@@ -187,7 +187,7 @@ export function buildOptions(args = {}) {
         printOptions.copies = args.copies;
     }
 
-    const action = extraOptions.action || (args.dry_run === false ? "print" : "preview");
+    const action = extraOptions.action || (args.dry_run === true ? "preview" : "print");
     extraOptions.action = action;
 
     return { pdfOptions, printOptions, extraOptions, action };

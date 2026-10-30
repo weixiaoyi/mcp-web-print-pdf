@@ -213,7 +213,7 @@ export async function start() {
 
     registerPrint(
         "printHtml",
-        "把 HTML 字符串渲染成 PDF 并打印。默认只渲染预览、不出纸（dry_run: false 才出纸）",
+        "把 HTML 字符串渲染成 PDF 并打印。默认真正出纸；dry_run: true 才只渲染预览",
         { html: z.string().describe("完整页面或 HTML 片段") },
         "printHtml",
         ({ html }) => ({ content: html })
@@ -221,7 +221,7 @@ export async function start() {
 
     registerPrint(
         "printHtmlByUrl",
-        "抓取一个网页并渲染成 PDF 打印。默认只预览；登录态可用 extra_options.cookies / httpHeaders / localStorages 处理",
+        "抓取一个网页并渲染成 PDF 打印。默认出纸；dry_run: true 只预览；登录态可用 extra_options.cookies / httpHeaders / localStorages 处理",
         { url: z.string().url().describe("网页 http(s) 地址") },
         "printHtmlByUrl",
         ({ url }) => ({ url })
@@ -229,7 +229,7 @@ export async function start() {
 
     registerPrint(
         "printHtmlByBase64",
-        "把 Base64 编码的 HTML 渲染成 PDF 打印。默认只预览",
+        "把 Base64 编码的 HTML 渲染成 PDF 打印。默认出纸；dry_run: true 只预览",
         { base64: z.string().min(1).describe("HTML 的 base64，可带 data:text/html;base64, 前缀") },
         "printHtmlByBase64",
         ({ base64 }) => ({ base64: stripDataUrl(base64) })
@@ -237,7 +237,7 @@ export async function start() {
 
     registerPrint(
         "printPdfByUrl",
-        "下载一个 PDF 链接并打印。默认只渲染预览、不出纸",
+        "下载一个 PDF 链接并打印。默认出纸；dry_run: true 只预览",
         { url: z.string().url().describe("PDF 的 http(s) 地址") },
         "printPdfByUrl",
         ({ url }) => ({ url })
@@ -245,7 +245,7 @@ export async function start() {
 
     registerPrint(
         "printPdfByBase64",
-        "把 Base64 编码的 PDF 打印。默认只预览",
+        "把 Base64 编码的 PDF 打印。默认出纸；dry_run: true 只预览",
         { base64: z.string().min(1).describe("PDF 的 base64，可带 data:application/pdf;base64, 前缀") },
         "printPdfByBase64",
         ({ base64 }) => ({ base64: stripDataUrl(base64) })
@@ -253,7 +253,7 @@ export async function start() {
 
     registerPrint(
         "printImageByUrl",
-        "下载一张图片并打印。默认只预览",
+        "下载一张图片并打印。默认出纸；dry_run: true 只预览",
         { url: z.string().url().describe("图片的 http(s) 地址") },
         "printImageByUrl",
         ({ url }) => ({ url })
@@ -261,7 +261,7 @@ export async function start() {
 
     registerPrint(
         "printImageByBase64",
-        "把 Base64 编码的图片打印。默认只预览；缺 data:image/...;base64, 前缀时会自动补",
+        "把 Base64 编码的图片打印。默认出纸；dry_run: true 只预览；缺 data:image/...;base64, 前缀时会自动补",
         { base64: z.string().min(1).describe("图片的 base64；带不带 data:image/...;base64, 前缀都可以") },
         "printImageByBase64",
         ({ base64 }) => ({ base64: toImageDataUrl(base64) })
@@ -269,7 +269,7 @@ export async function start() {
 
     server.tool(
         "printFile",
-        "打印本机文件：按扩展名自动选择 PDF / HTML / 图片通道。默认只预览、不出纸",
+        "打印本机文件：按扩展名自动选择 PDF / HTML / 图片通道。默认出纸；dry_run: true 只预览",
         {
             path: z.string().min(1).describe("本机文件路径，绝对路径或相对当前工作目录"),
             ...printArgsShape,
@@ -291,7 +291,7 @@ export async function start() {
 
     server.tool(
         "batchPrint",
-        "一次提交多个打印任务（HTML / 网页 / PDF / 图片，URL 或 Base64 混合）。默认只预览、不出纸",
+        "一次提交多个打印任务（HTML / 网页 / PDF / 图片，URL 或 Base64 混合）。默认出纸；dry_run: true 只预览",
         {
             tasks: z.array(batchTaskSchema).min(1).describe("任务列表，每项含 type 与对应内容字段"),
             ...printArgsShape,

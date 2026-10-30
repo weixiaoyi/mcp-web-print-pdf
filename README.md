@@ -214,8 +214,8 @@ Roo Code / Kilo Code 是 Cline 的分叉，配置结构相同，只是文件路�
 
 ### 打印
 
-所有打印工具默认 `dry_run: true`：只渲染预览、不出纸；要真正打印必须显式传 `dry_run: false`
-（或 `extra_options.action: "print"`）。
+所有打印工具默认 `dry_run: false`：直接出纸；要只渲染预览请显式传 `dry_run: true`
+（或 `extra_options.action: "preview"`）。默认会真的用纸，请先确认打印机和纸张。
 
 > 不传 `paper_format` 时，PDF 渲染默认用 A4，但打印阶段会沿用客户端默认打印机的纸张。
 > 要固定纸张（比如热敏 80mm、面单 100×150），请显式传 `paper_format` / `pdf_options`。
@@ -262,7 +262,7 @@ Roo Code / Kilo Code 是 Cline 的分叉，配置结构相同，只是文件路�
 | `pdf_options` | `pdfOptions` | 排版成 PDF：纸张、边距、页眉页脚、背景、水印、页码… |
 | `print_options` | `printOptions` | 投递打印机：打印机名、份数、单双面、缩放、纸盒、热敏锐化… |
 | `extra_options` | `extraOptions` | `action`、`requestTimeout`、`cookies`、`httpHeaders`、`localStorages`… |
-| `dry_run` | — | 便捷开关，默认只预览；显式 `action` 优先 |
+| `dry_run` | — | 默认出纸；`true` 只预览；显式 `action` 优先 |
 | `paper_format` | — | 便捷参数，等价于 `print_options.paperFormat` |
 | `printer_name` | — | 便捷参数，等价于 `print_options.printerName` |
 | `copies` | — | 便捷参数，等价于 `print_options.copies` |
@@ -302,6 +302,7 @@ Roo Code / Kilo Code 是 Cline 的分叉，配置结构相同，只是文件路�
   "tool": "printHtml",
   "arguments": {
     "html": "<h1>发票 #12345</h1><p>合计 ¥99.99</p>",
+    "dry_run": true,
     "paper_format": "A4",
     "pdf_options": { "printBackground": true, "margin": { "top": "10mm", "bottom": "10mm" } }
   }

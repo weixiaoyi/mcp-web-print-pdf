@@ -1,6 +1,6 @@
 {
   "name": "mcp-web-print-pdf",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "MCP server for Web打印专家 / web-print-pdf — full API coverage: HTML, URL, PDF, image, batch printing to local printers",
   "type": "module",
   "bin": {
@@ -15,7 +15,8 @@
   "scripts": {
     "start": "node bin/mcp.js",
     "mock": "node test/mock-server.js",
-    "smoke": "node test/smoke.js"
+    "smoke": "node test/smoke.js",
+    "test": "node --test test/options.test.js"
   },
   "engines": {
     "node": ">=18"

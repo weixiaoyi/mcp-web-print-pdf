@@ -221,8 +221,9 @@ file by path" method.
 
 ### Printing
 
-Every printing tool defaults to `dry_run: true`: render a preview only, no paper. To actually print,
-pass `dry_run: false` explicitly (or `extra_options.action: "print"`).
+Every printing tool defaults to `dry_run: false`: it actually prints. To render a preview only, pass
+`dry_run: true` explicitly (or `extra_options.action: "preview"`). The default really uses paper —
+check the printer and paper first.
 
 > When `paper_format` is omitted, the PDF is rendered at A4 but the print stage uses the client's
 > default printer paper. To pin the paper (80mm thermal, 100×150 labels, etc.), pass `paper_format` /
@@ -271,7 +272,7 @@ All printing tools share one parameter set, mirroring the upstream four argument
 | `pdf_options` | `pdfOptions` | PDF layout: paper, margins, header/footer, background, watermark, page numbers… |
 | `print_options` | `printOptions` | Printer delivery: printer name, copies, duplex, scaling, tray, thermal sharpening… |
 | `extra_options` | `extraOptions` | `action`, `requestTimeout`, `cookies`, `httpHeaders`, `localStorages`… |
-| `dry_run` | — | Convenience switch, preview by default; an explicit `action` wins |
+| `dry_run` | — | Prints by default; `true` previews only; an explicit `action` wins |
 | `paper_format` | — | Convenience for `print_options.paperFormat` |
 | `printer_name` | — | Convenience for `print_options.printerName` |
 | `copies` | — | Convenience for `print_options.copies` |
@@ -315,6 +316,7 @@ Preview an A4 invoice (no paper):
   "tool": "printHtml",
   "arguments": {
     "html": "<h1>Invoice #12345</h1><p>Total ¥99.99</p>",
+    "dry_run": true,
     "paper_format": "A4",
     "pdf_options": { "printBackground": true, "margin": { "top": "10mm", "bottom": "10mm" } }
   }
