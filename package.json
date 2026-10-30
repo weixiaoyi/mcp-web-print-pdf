@@ -4,7 +4,7 @@
   "description": "MCP server for Web打印专家 / web-print-pdf — full API coverage: HTML, URL, PDF, image, batch printing to local printers",
   "type": "module",
   "bin": {
-    "mcp-web-print-pdf": "./bin/mcp.js"
+    "mcp-web-print-pdf": "bin/mcp.js"
   },
   "files": [
     "bin",
@@ -25,5 +25,26 @@
     "ws": "^8.18.0",
     "zod": "^3.23.8"
   },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "print",
+    "printer",
+    "web-print-pdf",
+    "silent-print",
+    "html-to-pdf",
+    "thermal",
+    "receipt",
+    "label"
+  ],
+  "homepage": "https://github.com/weixiaoyi/mcp-web-print-pdf#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weixiaoyi/mcp-web-print-pdf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/weixiaoyi/mcp-web-print-pdf/issues"
+  },
+  "author": "weixiaoyi",
   "license": "MIT"
 }
