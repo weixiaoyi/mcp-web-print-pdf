@@ -1,0 +1,41 @@
+name: Feature request
+description: 想支持新的宿主、新的打印参数，或改进文档
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 你想解决什么问题
+      description: 描述场景，而不是先给方案
+      placeholder: 我们的电子面单是 100×150，想在一次 batchPrint 里混排面单和 A4 对账单。
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 你期待的形式
+      description: 工具名、参数、行为都可以写
+    validations:
+      required: false
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 类型
+      options:
+        - 新宿主接入
+        - 新工具 / 新参数
+        - 文档与示例
+        - 其它
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: upstream
+    attributes:
+      label: 上游确认
+      description: 本仓库只映射 `web-print-pdf` 的公开 API，客户端本身的行为改动不在范围内。
+      options:
+        - label: 这个能力在 `web-print-pdf@2.x` 或客户端里已经存在，只是本 MCP 还没暴露
+        - label: 这是客户端需要新增的能力（我会另外去提 issue）

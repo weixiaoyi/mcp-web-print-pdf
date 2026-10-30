@@ -1,7 +1,7 @@
 {
   "name": "mcp-web-print-pdf",
   "version": "0.2.3",
-  "description": "MCP server for Web打印专家 / web-print-pdf — full API coverage: HTML, URL, PDF, image, batch printing to local printers",
+  "description": "MCP server for Web打印专家 / web-print-pdf: let AI agents print HTML, web pages, PDFs and images to local printers — silent printing, thermal receipts, labels, batch jobs",
   "type": "module",
   "bin": {
     "mcp-web-print-pdf": "bin/mcp.js"
@@ -28,15 +28,23 @@
   },
   "keywords": [
     "mcp",
+    "mcp-server",
     "model-context-protocol",
     "print",
     "printer",
-    "web-print-pdf",
+    "printing",
     "silent-print",
     "html-to-pdf",
+    "print-html",
+    "web-print-pdf",
     "thermal",
+    "thermal-printer",
     "receipt",
-    "label"
+    "label",
+    "claude",
+    "cursor",
+    "ai-agent",
+    "llm"
   ],
   "homepage": "https://webprintpdf.com/",
   "repository": {

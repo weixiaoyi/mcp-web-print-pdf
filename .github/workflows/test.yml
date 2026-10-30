@@ -1,0 +1,51 @@
+name: test
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: node ${{ matrix.node }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [18, 20, 22]
+        exclude:
+          - os: windows-latest
+            node: 18
+          - os: windows-latest
+            node: 22
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Smoke test against the mock client
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          node test/mock-server.js &
+          MOCK_PID=$!
+          sleep 2
+          node test/smoke.js
+          STATUS=$?
+          kill $MOCK_PID 2>/dev/null || true
+          exit $STATUS

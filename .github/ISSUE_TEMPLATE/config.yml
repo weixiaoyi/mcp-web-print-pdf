@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: MCP 接入文档 / Setup guide
+    url: https://webprintpdf.com/docs/mcp-print/
+    about: 各宿主怎么挂 MCP server，先看这里
+  - name: 客户端下载与安装问题
+    url: https://webprintpdf.com/downloadApp/
+    about: 客户端装不上、连不上 ws://127.0.0.1:16794，属于客户端问题
+  - name: npm 包页面
+    url: https://www.npmjs.com/package/mcp-web-print-pdf
+    about: 版本号、发布记录

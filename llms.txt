@@ -1,0 +1,41 @@
+# mcp-web-print-pdf
+
+> MCP server：让 AI agent（Claude Desktop / Cursor / Claude Code / Cline / VS Code / Codex / dsh）把 HTML、网页、PDF、图片打印到本机打印机。
+> 已覆盖 web-print-pdf@2.x 全部公开 API，共 16 个工具；额外提供 printFile（按本机路径打印，绕开 MCP stdio 的 10MB 单条消息上限）。
+> 需要本机安装并启动「Web打印专家」客户端（监听 ws://127.0.0.1:16794/websocket/standard）。
+
+## 它是什么
+
+- 一个 stdio MCP server，通过 `npx -y mcp-web-print-pdf` 启动，无需安装。
+- 打印渲染、授权校验、驱动投递都在 Web打印专家客户端里完成；本仓库只做协议映射，不改客户端。
+- 打印工具默认 `dry_run: false`（真的出纸）；`dry_run: true` 或 `extra_options.action: "preview"` 只渲染预览。
+- 支持热敏小票（80mm）、面单标签（100×150 等自定义尺寸）、双面、纸盒、缩放、锐化等驱动级参数。
+
+## 安装与配置
+
+- 客户端下载：https://webprintpdf.com/downloadApp/
+- MCP 接入文档（各宿主配置）：https://webprintpdf.com/docs/mcp-print/
+- 通用配置：`{ "command": "npx", "args": ["-y", "mcp-web-print-pdf"] }`
+- 端口 / 超时：`WEBPRINT_PORT`（默认 16794）、`WEBPRINT_TIMEOUT`（毫秒，默认 120000）
+
+## 工具（16 个）
+
+- 状态：`getConnectStatus`、`getPrinterList`、`getPrinterPapers`
+- 打印：`printHtml`、`printHtmlByUrl`、`printHtmlByBase64`、`printPdfByUrl`、`printPdfByBase64`、`printImageByUrl`、`printImageByBase64`、`printFile`、`batchPrint`
+- 客户端设置：`setTitle`、`setThemeColor`、`switchTabsVisibility`、`setContactUsTabInnerHtml`
+
+## 文档
+
+- 中文 README：https://github.com/weixiaoyi/mcp-web-print-pdf
+- English README：https://github.com/weixiaoyi/mcp-web-print-pdf/blob/master/README_EN.md
+- 常见问题：https://github.com/weixiaoyi/mcp-web-print-pdf#常见问题-faq
+- 已知边界：https://github.com/weixiaoyi/mcp-web-print-pdf#已知边界
+- 更新日志：https://github.com/weixiaoyi/mcp-web-print-pdf/blob/master/CHANGELOG.md
+- npm：https://www.npmjs.com/package/mcp-web-print-pdf
+- 官网：https://webprintpdf.com/
+
+## 可选
+
+- 上游浏览器库：https://www.npmjs.com/package/web-print-pdf
+- 客户端支持 Windows 10/11、macOS 11+、Linux / 银河麒麟 / 统信 UOS
+- 许可证：MIT

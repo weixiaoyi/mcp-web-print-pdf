@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="mcp-web-print-pdf">
+  <title>mcp-web-print-pdf</title>
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2f6df6"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="30" fill="url(#tile)"/>
+  <!-- sheet feeding in -->
+  <rect x="51" y="16" width="26" height="30" rx="5" fill="#fff" opacity=".96"/>
+  <rect x="56" y="23" width="16" height="3.2" rx="1.6" fill="#2f6df6" opacity=".8"/>
+  <rect x="56" y="30" width="10" height="3.2" rx="1.6" fill="#2f6df6" opacity=".8"/>
+  <!-- printer body -->
+  <rect x="16" y="44" width="96" height="44" rx="11" fill="#fff"/>
+  <rect x="24" y="52" width="15" height="4.5" rx="2.2" fill="#7c3aed" opacity=".65"/>
+  <circle cx="95" cy="55.5" r="4" fill="#2f6df6" opacity=".7"/>
+  <!-- slot notches -->
+  <rect x="30" y="68" width="14" height="6" rx="3" fill="#1f2a44" opacity=".3"/>
+  <rect x="84" y="68" width="14" height="6" rx="3" fill="#1f2a44" opacity=".3"/>
+  <!-- printed sheet coming out -->
+  <rect x="45" y="74" width="38" height="38" rx="4" fill="#eef3ff"/>
+  <g fill="#2f4478" opacity=".47">
+    <rect x="52" y="82" width="24" height="3.2" rx="1.6"/>
+    <rect x="52" y="89" width="17" height="3.2" rx="1.6"/>
+    <rect x="52" y="96" width="21" height="3.2" rx="1.6"/>
+  </g>
+</svg>

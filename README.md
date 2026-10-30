@@ -1,20 +1,96 @@
-# mcp-web-print-pdf
+<p align="center"><img src="assets/logo.svg" width="96" height="96" alt="mcp-web-print-pdf logo"></p>
 
-**中文** | [English](README_EN.md)
+<h1 align="center">mcp-web-print-pdf</h1>
 
-让 AI agent（Claude Desktop / Cursor / dsh）把 HTML、网页、PDF、图片打印到本机打印机。
+<p align="center">
+  <b>让 AI agent 把 HTML / 网页 / PDF / 图片直接打印到本机打印机</b><br>
+  <sub>MCP server for silent printing · Claude Desktop · Cursor · Claude Code · VS Code · Cline · Codex · dsh</sub>
+</p>
 
-它**不改**「Web打印专家」客户端，也不改 `web-print-pdf` 浏览器库——它只是给客户端已有的
+<p align="center">
+  <a href="https://www.npmjs.com/package/mcp-web-print-pdf"><img src="https://img.shields.io/npm/v/mcp-web-print-pdf?logo=npm&logoColor=white&label=npm&color=cb3837" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/mcp-web-print-pdf"><img src="https://img.shields.io/npm/dm/mcp-web-print-pdf?logo=npm&logoColor=white&label=downloads&color=cb3837" alt="npm downloads"></a>
+  <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-compatible-6f42c1" alt="MCP compatible"></a>
+  <a href="package.json"><img src="https://img.shields.io/badge/node-%E2%89%A518-339933?logo=node.js&logoColor=white" alt="node >=18"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/weixiaoyi/mcp-web-print-pdf?color=2b9348" alt="license MIT"></a>
+  <a href="https://github.com/weixiaoyi/mcp-web-print-pdf/actions/workflows/test.yml"><img src="https://github.com/weixiaoyi/mcp-web-print-pdf/actions/workflows/test.yml/badge.svg?branch=master" alt="CI"></a>
+  <a href="https://github.com/weixiaoyi/mcp-web-print-pdf/stargazers"><img src="https://img.shields.io/github/stars/weixiaoyi/mcp-web-print-pdf?style=social" alt="GitHub stars"></a>
+  <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="PRs welcome"></a>
+</p>
+
+<p align="center">
+  <b>中文</b> · <a href="README_EN.md">English</a> ·
+  <a href="https://webprintpdf.com/">官网</a> ·
+  <a href="https://webprintpdf.com/docs/mcp-print/">接入文档</a> ·
+  <a href="https://webprintpdf.com/downloadApp/">下载客户端</a>
+</p>
+
+---
+
+一句话：**装一个 MCP server，模型就能「说一句、打一张」**——不必截图、不必弹浏览器、不必让用户按 Ctrl+P。
+
+它**不改**「Web打印专家」客户端，也不改 `web-print-pdf` 浏览器库——只是给客户端已有的
 `ws://127.0.0.1:16794/websocket/standard` 再加一个客户端，并把 `web-print-pdf@2.x` 的公开 API
-一对一映射成 MCP 工具。
-
-- 官网：<https://webprintpdf.com/>
-- 底层 npm 包：[web-print-pdf](https://www.npmjs.com/package/web-print-pdf)
-- 文档：<https://webprintpdf.com/docs/>
+一对一映射成 16 个 MCP 工具。
 
 ```
-Claude / dsh ──stdio──> mcp-web-print-pdf ──ws──> Web打印专家客户端 ──> 打印机
+Claude / Cursor / Cline / dsh ──stdio──> mcp-web-print-pdf ──ws──> Web打印专家客户端 ──> 打印机
 ```
+
+## 为什么用它
+
+| 你想要的 | 常见做法 | 用 mcp-web-print-pdf |
+|---|---|---|
+| 让模型打印一张发票 / 报表 | 截图 → 手工打开 → Ctrl+P | 模型调 `printHtml`，静默出纸 |
+| 批量打 100 张面单 | 循环开页面、逐个确认 | 一次 `batchPrint` 提交混合任务 |
+| 80mm 热敏小票 | 前端 `window.print()`，样式全乱 | `pdf_options` 控制纸宽 / 边距 / 水印 |
+| 打印本机 PDF | 上传到网盘再让用户下载 | `printFile` 按路径直连客户端 |
+| 电子面单 / 标签机 | 需要专用 SDK | 走系统打印驱动 + `print_options` |
+
+和 Playwright / Puppeteer 打印相比，它不是「无头浏览器另存 PDF」，而是**调用本机已装好的打印驱动**：
+支持热敏、针式、标签机，支持纸盒 / 双面 / 缩放 / 锐化等驱动级参数，也不用额外下载 Chromium。
+
+## 30 秒上手
+
+```json
+{
+  "mcpServers": {
+    "webprint": {
+      "command": "npx",
+      "args": ["-y", "mcp-web-print-pdf"]
+    }
+  }
+}
+```
+
+1. 装并启动 [Web打印专家客户端](https://webprintpdf.com/downloadApp/)（监听 `ws://127.0.0.1:16794/websocket/standard`）
+2. 把上面的 JSON 贴进宿主配置（各宿主位置见[配置](#配置)）
+3. 让模型先 `getConnectStatus` 探活，再 `printHtml` 出一张测试页
+
+> 首次运行 `npx` 会自动下载并缓存；要固定版本写 `npx -y mcp-web-print-pdf@0.2.3`。
+
+## 目录
+
+- [为什么用它](#为什么用它) · [30 秒上手](#30-秒上手) · [支持的宿主](#支持的宿主)
+- [前置条件](#前置条件) · [安装](#安装) · [配置](#配置)
+- [工具](#工具) · [参数](#参数) · [示例](#示例)
+- [常见问题 FAQ](#常见问题-faq)
+- [大文件怎么打](#大文件怎么打) · [实现要点](#实现要点)
+- [本地开发](#本地开发) · [已知边界](#已知边界) · [相关链接](#相关链接)
+
+## 支持的宿主
+
+| 宿主 | 配置位置 | 顶层键 |
+|---|---|---|
+| [Claude Desktop](#claude-desktop) | `claude_desktop_config.json` | `mcpServers` |
+| [Cursor](#cursor) | `.cursor/mcp.json`、`~/.cursor/mcp.json` | `mcpServers` |
+| [Claude Code](#claude-code) | `claude mcp add` 或 `.mcp.json` | `mcpServers` |
+| [VS Code + Copilot](#vs-code--github-copilot) | `.vscode/mcp.json` | `servers` |
+| [DeepSeek Harness（dsh）](#deepseek-harnessdsh) | `cordis.patch.yml` | — |
+| [Codex CLI](#openai-codex-cli) | `~/.codex/config.toml` | `[mcp_servers.…]` |
+| [Cline / Roo / Kilo](#cline--roo-code--kilo-code) | `cline_mcp_settings.json` | `mcpServers` |
+| [Cherry Studio](#cherry-studio) · [Trae](#trae) | 图形界面 | `mcpServers` |
+| [其它宿主](#其它宿主) | 见下表 | `mcpServers` |
 
 ## 前置条件
 
@@ -371,6 +447,66 @@ Roo Code / Kilo Code 是 Cline 的分叉，配置结构相同，只是文件路�
 > 批量任务里每个 `extraOptions.action` 必须一致（客户端在浅合并后会校验），所以别在单个任务里
 > 混用 `print` 和 `preview`；统一用顶层 `dry_run` 控制即可。
 
+## 常见问题 FAQ
+
+### MCP 是什么？为什么打印要经过 MCP？
+
+MCP（Model Context Protocol）是模型调用外部工具的通用协议。把打印能力做成 MCP server 后，
+Claude、Cursor、Cline、dsh 这些宿主不用各写一套对接代码，接一次就能在所有宿主里用同一批工具。
+
+### 需要联网吗？
+
+不需要。所有打印请求都走本机 `ws://127.0.0.1:16794/websocket/standard`，只有首次 `npx` 下载包时需要网络。
+
+### 需要额外买授权吗？
+
+预览（`extra_options.action = "preview"` / `dry_run: true`）只渲染不送印，不检查授权；
+正式出纸由 Web打印专家客户端校验，未授权时会返回 `Not allowed to use, please purchase authorization`。
+
+### 会不会「偷偷」打印、浪费纸？
+
+默认 `dry_run: false` 是直接出纸（和服务端 API 语义一致）。调试阶段请显式传 `dry_run: true`，
+确认排版后再改成 `false`。
+
+### 支持热敏小票机 / 标签打印机吗？
+
+支持。热敏、针式、面单机都走系统打印驱动，用 `pdf_options.width/height` 控制版面，
+用 `print_options.paperFormat` 指定驱动里的纸名，必要时开 `sharp: true` + `dpi` 提升小票清晰度。
+
+### 和 Playwright / Puppeteer 打印有什么区别？
+
+Playwright 是在无头 Chromium 里渲染成 PDF 再调用系统打印，需要单独下载浏览器内核，
+拿不到驱动级参数（纸盒、锐化、双面翻转）；本项目直接把参数交给已经装好的客户端和驱动，
+更贴近「真的在这台机器上打印」。
+
+### 支持 macOS / Linux / 国产系统吗？
+
+客户端支持 Windows 10/11、macOS 11+，以及 Linux / 银河麒麟 / 统信 UOS；本 MCP 是纯 Node 进程（Node ≥ 18），
+能跑客户端的地方就能跑它。
+
+### 为什么预览只返回一个 URL，模型看不到图？
+
+预览返回的是 `pdfUrl` / `printPreviewUrl`，MCP 通道里没有图片内容。要让模型「看图」，
+需要额外把 PDF 转成 PNG 再喂给模型。
+
+### 大文件 / 大 HTML 为什么失败？
+
+MCP 的 stdio 单条消息默认上限 10MB，Base64 会再膨胀约 4/3。大文件请用 `printFile`（本机读文件）
+或先挂到 HTTP 地址用 `printPdfByUrl` / `printImageByUrl`。
+
+### 端口不是 16794 怎么办？
+
+设环境变量 `WEBPRINT_PORT`；请求超时设 `WEBPRINT_TIMEOUT`（毫秒）。这两个都从宿主配置的 `env` 传入。
+
+### 能让 ChatGPT / claude.ai 网页版直接用吗？
+
+暂时不行。网页版只接受远程 HTTP MCP，需要额外一层 HTTP 桥接本机 stdio server（本项目未提供）。
+
+### 打印出来是空白 / 内容被截断？
+
+通常是纸张尺寸和内容不匹配：显式传 `paper_format` 或 `pdf_options.width/height`，并打开
+`printBackground: true`（背景色 / 背景图默认不打）。
+
 ## 大文件怎么打
 
 MCP 的 stdio 通道单条消息默认上限 **10MB**（SDK 的 `ReadBuffer`），所以：
@@ -463,6 +599,14 @@ npx @modelcontextprotocol/inspector node bin/mcp.js
 - 客户端下载：<https://webprintpdf.com/downloadApp/>
 - web-print-pdf（npm）：<https://www.npmjs.com/package/web-print-pdf>
 - 本仓库：<https://github.com/weixiaoyi/mcp-web-print-pdf>
+- 更新日志：[CHANGELOG.md](CHANGELOG.md)
+- 面向 AI 的说明：[llms.txt](llms.txt)
+
+## 贡献
+
+Issue、PR、文档纠错都欢迎，先看 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
+如果这个项目帮你省了时间，点个 ⭐ 能让更多找「MCP 打印」的人看到它。
 
 ## License
 

@@ -1,20 +1,98 @@
-# mcp-web-print-pdf
+<p align="center"><img src="assets/logo.svg" width="96" height="96" alt="mcp-web-print-pdf logo"></p>
 
-[中文](README.md) | **English**
+<h1 align="center">mcp-web-print-pdf</h1>
 
-Let AI agents (Claude Desktop / Cursor / dsh) print HTML, web pages, PDFs, and images to local printers.
+<p align="center">
+  <b>Let AI agents print HTML / web pages / PDFs / images straight to a local printer</b><br>
+  <sub>MCP server for silent printing · Claude Desktop · Cursor · Claude Code · VS Code · Cline · Codex · dsh</sub>
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/mcp-web-print-pdf"><img src="https://img.shields.io/npm/v/mcp-web-print-pdf?logo=npm&logoColor=white&label=npm&color=cb3837" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/mcp-web-print-pdf"><img src="https://img.shields.io/npm/dm/mcp-web-print-pdf?logo=npm&logoColor=white&label=downloads&color=cb3837" alt="npm downloads"></a>
+  <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-compatible-6f42c1" alt="MCP compatible"></a>
+  <a href="package.json"><img src="https://img.shields.io/badge/node-%E2%89%A518-339933?logo=node.js&logoColor=white" alt="node >=18"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/weixiaoyi/mcp-web-print-pdf?color=2b9348" alt="license MIT"></a>
+  <a href="https://github.com/weixiaoyi/mcp-web-print-pdf/actions/workflows/test.yml"><img src="https://github.com/weixiaoyi/mcp-web-print-pdf/actions/workflows/test.yml/badge.svg?branch=master" alt="CI"></a>
+  <a href="https://github.com/weixiaoyi/mcp-web-print-pdf/stargazers"><img src="https://img.shields.io/github/stars/weixiaoyi/mcp-web-print-pdf?style=social" alt="GitHub stars"></a>
+  <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="PRs welcome"></a>
+</p>
+
+<p align="center">
+  <a href="README.md">中文</a> · <b>English</b> ·
+  <a href="https://webprintpdf.com/">Website</a> ·
+  <a href="https://webprintpdf.com/docs/mcp-print/">MCP guide</a> ·
+  <a href="https://webprintpdf.com/downloadApp/">Download client</a>
+</p>
+
+---
+
+In one line: **install one MCP server and the model can "say it once, print it once"** — no screenshots,
+no browser pop-ups, no asking the user to hit Ctrl+P.
 
 It does **not** modify the Web Print Expert client or the `web-print-pdf` browser library — it simply
 adds another client to the existing `ws://127.0.0.1:16794/websocket/standard` endpoint and maps the
-public `web-print-pdf@2.x` API one-to-one onto MCP tools.
-
-- Website: <https://webprintpdf.com/>
-- Underlying npm package: [web-print-pdf](https://www.npmjs.com/package/web-print-pdf)
-- Docs: <https://webprintpdf.com/docs/>
+public `web-print-pdf@2.x` API one-to-one onto 16 MCP tools.
 
 ```
-Claude / dsh ──stdio──> mcp-web-print-pdf ──ws──> Web Print Expert client ──> printer
+Claude / Cursor / Cline / dsh ──stdio──> mcp-web-print-pdf ──ws──> Web Print Expert client ──> printer
 ```
+
+## Why this one
+
+| What you want | Usual approach | With mcp-web-print-pdf |
+|---|---|---|
+| Have the model print an invoice / report | screenshot → open it → Ctrl+P | model calls `printHtml`, silent output |
+| Print 100 shipping labels | loop over pages, confirm each one | one `batchPrint` with mixed tasks |
+| 80mm thermal receipts | `window.print()` mangles the layout | `pdf_options` controls width / margin / watermark |
+| Print a local PDF | upload it, then download it again | `printFile` reads it by path |
+| Labels and dot-matrix forms | needs a vendor SDK | system print driver + `print_options` |
+
+Compared with Playwright / Puppeteer printing, this is not "headless browser saves a PDF": it **drives the
+printer driver already installed on the machine**. Thermal, dot-matrix and label printers work, driver-level
+options (tray, duplex, scaling, sharpening) are reachable, and there is no Chromium download.
+
+## Quick start (30 seconds)
+
+```json
+{
+  "mcpServers": {
+    "webprint": {
+      "command": "npx",
+      "args": ["-y", "mcp-web-print-pdf"]
+    }
+  }
+}
+```
+
+1. Install and start the [Web Print Expert client](https://webprintpdf.com/downloadApp/) (listens on `ws://127.0.0.1:16794/websocket/standard`)
+2. Paste the JSON above into your host config (locations below)
+3. Ask the model to call `getConnectStatus`, then `printHtml` a test page
+
+> The first `npx` run downloads and caches the package; pin it with `npx -y mcp-web-print-pdf@0.2.3`.
+
+## Contents
+
+- [Why this one](#why-this-one) · [Quick start](#quick-start-30-seconds) · [Supported hosts](#supported-hosts)
+- [Prerequisites](#prerequisites) · [Installation](#installation) · [Configuration](#configuration)
+- [Tools](#tools) · [Parameters](#parameters) · [Examples](#examples)
+- [FAQ](#faq)
+- [Printing large files](#printing-large-files) · [Implementation notes](#implementation-notes)
+- [Local development](#local-development) · [Known limitations](#known-limitations) · [Links](#links)
+
+## Supported hosts
+
+| Host | Config location | Top-level key |
+|---|---|---|
+| [Claude Desktop](#claude-desktop) | `claude_desktop_config.json` | `mcpServers` |
+| [Cursor](#cursor) | `.cursor/mcp.json`, `~/.cursor/mcp.json` | `mcpServers` |
+| [Claude Code](#claude-code) | `claude mcp add` or `.mcp.json` | `mcpServers` |
+| [VS Code + Copilot](#vs-code--github-copilot) | `.vscode/mcp.json` | `servers` |
+| [DeepSeek Harness (dsh)](#deepseek-harness-dsh) | `cordis.patch.yml` | — |
+| [Codex CLI](#openai-codex-cli) | `~/.codex/config.toml` | `[mcp_servers.…]` |
+| [Cline / Roo / Kilo](#cline--roo-code--kilo-code) | `cline_mcp_settings.json` | `mcpServers` |
+| [Cherry Studio](#cherry-studio) · [Trae](#trae) | GUI | `mcpServers` |
+| [Other hosts](#other-hosts) | see table | `mcpServers` |
 
 ## Prerequisites
 
@@ -386,6 +464,71 @@ Batch of mixed tasks:
 > Every task's `extraOptions.action` must be the same (the client validates after a shallow merge), so
 > do not mix `print` and `preview` per task; control it with the top-level `dry_run` instead.
 
+## FAQ
+
+### What is MCP, and why route printing through it?
+
+MCP (Model Context Protocol) is the common protocol models use to call external tools. Once printing is
+an MCP server, Claude, Cursor, Cline and dsh share one integration instead of each writing its own.
+
+### Does it need a network connection?
+
+No. Every request goes to the local `ws://127.0.0.1:16794/websocket/standard`; only the first `npx`
+download needs the network.
+
+### Do I need a separate license?
+
+Previews (`extra_options.action = "preview"` / `dry_run: true`) render without printing and skip the
+license check. Real output is validated by the Web Print Expert client; without a license it returns
+`Not allowed to use, please purchase authorization`.
+
+### Will it "secretly" print and waste paper?
+
+`dry_run: false` really prints, matching the server-side API semantics. While building a layout pass
+`dry_run: true`, then flip it to `false` once the preview looks right.
+
+### Do thermal receipt and label printers work?
+
+Yes. Thermal, dot-matrix and label printers all go through the system driver: shape the page with
+`pdf_options.width` / `height`, pick the driver paper name with `print_options.paperFormat`, and add
+`sharp: true` + `dpi` for crisper small text.
+
+### How is this different from Playwright / Puppeteer printing?
+
+Playwright renders in headless Chromium and then prints, which means downloading a browser engine and
+losing driver-level controls (tray, sharpening, duplex flipping). This project hands the options to the
+already-installed client and driver — closer to "actually printing on this machine".
+
+### Does it work on macOS / Linux / domestic OSes?
+
+The client supports Windows 10/11, macOS 11+, and Linux / Kylin / UOS. This MCP server is a plain Node
+process (Node ≥ 18), so anywhere the client runs, it runs.
+
+### Why does a preview only return a URL?
+
+Previews return `pdfUrl` / `printPreviewUrl`; the MCP channel carries no image bytes. To let the model
+"see" the page you need to convert the PDF to PNG first.
+
+### Why do large files or large HTML payloads fail?
+
+MCP's stdio transport caps a single message at 10MB by default, and Base64 inflates by ~4/3. Use
+`printFile` (reads locally) or host the file and use `printPdfByUrl` / `printImageByUrl`.
+
+### What if the client runs on a non-default port?
+
+Set `WEBPRINT_PORT`; set `WEBPRINT_TIMEOUT` (milliseconds) for the request timeout. Pass both through the
+host config's `env`.
+
+### Can the ChatGPT or claude.ai web app use it?
+
+Not yet. Those only accept remote HTTP MCP servers, so a local stdio server needs an HTTP bridge (not
+provided here).
+
+### Output is blank or clipped — why?
+
+Usually the paper size does not match the content: pass `paper_format` or `pdf_options.width` / `height`
+explicitly, and enable `printBackground: true` (backgrounds are not printed by default).
+
 ## Printing large files
 
 MCP's stdio channel has a default **10MB** per-message limit (the SDK's `ReadBuffer`), so:
@@ -493,6 +636,14 @@ check that a preview appears.
 - Client download: <https://webprintpdf.com/downloadApp/>
 - web-print-pdf (npm): <https://www.npmjs.com/package/web-print-pdf>
 - This repository: <https://github.com/weixiaoyi/mcp-web-print-pdf>
+- Changelog: [CHANGELOG.md](CHANGELOG.md)
+- AI-readable summary: [llms.txt](llms.txt)
+
+## Contributing
+
+Issues, PRs and doc fixes are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+If this saved you time, a ⭐ helps other people searching for "MCP printing" find it.
 
 ## License
 
