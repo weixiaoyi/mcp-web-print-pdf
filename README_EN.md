@@ -8,9 +8,20 @@ It does **not** modify the Web Print Expert client or the `web-print-pdf` browse
 adds another client to the existing `ws://127.0.0.1:16794/websocket/standard` endpoint and maps the
 public `web-print-pdf@2.x` API one-to-one onto MCP tools.
 
+- Website: <https://webprintpdf.com/>
+- Underlying npm package: [web-print-pdf](https://www.npmjs.com/package/web-print-pdf)
+- Docs: <https://webprintpdf.com/docs/>
+
 ```
 Claude / dsh ──stdio──> mcp-web-print-pdf ──ws──> Web Print Expert client ──> printer
 ```
+
+## Prerequisites
+
+- Install and start the [Web Print Expert client](https://webprintpdf.com/downloadApp/) (Windows 10/11, macOS 11+, Linux / Kylin / UOS)
+- The client listens on `ws://127.0.0.1:16794/websocket/standard` by default
+- No changes to the client or your frontend code; this MCP just maps the public [web-print-pdf](https://www.npmjs.com/package/web-print-pdf) API onto MCP tools
+- MCP guide: <https://webprintpdf.com/docs/mcp-print/>
 
 ## Installation
 
@@ -388,7 +399,7 @@ MCP's stdio channel has a default **10MB** per-message limit (the SDK's `ReadBuf
   the client over WebSocket, bypassing the MCP message limit.
 - Alternatively host the file over HTTP and use `printPdfByUrl` / `printImageByUrl` / `printHtmlByUrl`.
 
-## Coverage vs `web-print-pdf@2.1.9`
+## Coverage vs [web-print-pdf@2.1.9](https://www.npmjs.com/package/web-print-pdf)
 
 | Upstream public API | This MCP |
 |---|---|
@@ -464,6 +475,15 @@ check that a preview appears.
 - Parameters and message shapes are calibrated against the `ElctronPrintWeb` (client 1.0.9) source:
   `batchPrint` tasks use a `data` field, not the `content` / `url` / `base64` fields shown in the
   `web-print-pdf` README examples.
+
+## Links
+
+- Website: <https://webprintpdf.com/>
+- Docs: <https://webprintpdf.com/docs/>
+- MCP guide: <https://webprintpdf.com/docs/mcp-print/>
+- Client download: <https://webprintpdf.com/downloadApp/>
+- web-print-pdf (npm): <https://www.npmjs.com/package/web-print-pdf>
+- This repository: <https://github.com/weixiaoyi/mcp-web-print-pdf>
 
 ## License
 

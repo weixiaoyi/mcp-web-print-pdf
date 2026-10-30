@@ -8,9 +8,20 @@
 `ws://127.0.0.1:16794/websocket/standard` 再加一个客户端，并把 `web-print-pdf@2.x` 的公开 API
 一对一映射成 MCP 工具。
 
+- 官网：<https://webprintpdf.com/>
+- 底层 npm 包：[web-print-pdf](https://www.npmjs.com/package/web-print-pdf)
+- 文档：<https://webprintpdf.com/docs/>
+
 ```
 Claude / dsh ──stdio──> mcp-web-print-pdf ──ws──> Web打印专家客户端 ──> 打印机
 ```
+
+## 前置条件
+
+- 本机安装并启动 [Web打印专家客户端](https://webprintpdf.com/downloadApp/)（Windows 10/11、macOS 11+、Linux / 银河麒麟 / 统信 UOS）
+- 客户端默认监听 `ws://127.0.0.1:16794/websocket/standard`
+- 不需要改客户端或前端代码；本 MCP 只是把 [web-print-pdf](https://www.npmjs.com/package/web-print-pdf) 的公开 API 映射成 MCP 工具
+- MCP 接入指南：<https://webprintpdf.com/docs/mcp-print/>
 
 ## 安装
 
@@ -374,7 +385,7 @@ MCP 的 stdio 通道单条消息默认上限 **10MB**（SDK 的 `ReadBuffer`）�
   客户端，绕开 MCP 的消息上限。
 - 也可以先把文件挂到 HTTP 地址，用 `printPdfByUrl` / `printImageByUrl` / `printHtmlByUrl`。
 
-## 与 `web-print-pdf@2.1.9` 的覆盖对照
+## 与 [web-print-pdf@2.1.9](https://www.npmjs.com/package/web-print-pdf) 的覆盖对照
 
 | 上游公开 API | 本 MCP |
 |---|---|
@@ -436,6 +447,15 @@ npx @modelcontextprotocol/inspector node bin/mcp.js
 - 预览模式下非法的 `printerName` 可能被客户端忽略而不报错，正式出纸前建议用 `action: "print"` 验证。
 - 参数与消息结构按 `ElctronPrintWeb`（客户端 1.0.9）源码校准：`batchPrint` 任务用 `data` 字段，
   不是 `web-print-pdf` README 示例里的 `content` / `url` / `base64`。
+
+## 相关链接
+
+- 官网：<https://webprintpdf.com/>
+- 文档：<https://webprintpdf.com/docs/>
+- MCP 接入指南：<https://webprintpdf.com/docs/mcp-print/>
+- 客户端下载：<https://webprintpdf.com/downloadApp/>
+- web-print-pdf（npm）：<https://www.npmjs.com/package/web-print-pdf>
+- 本仓库：<https://github.com/weixiaoyi/mcp-web-print-pdf>
 
 ## License
 

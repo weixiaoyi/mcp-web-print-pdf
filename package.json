@@ -1,6 +1,6 @@
 {
   "name": "mcp-web-print-pdf",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "MCP server for Web打印专家 / web-print-pdf — full API coverage: HTML, URL, PDF, image, batch printing to local printers",
   "type": "module",
   "bin": {
@@ -38,7 +38,7 @@
     "receipt",
     "label"
   ],
-  "homepage": "https://github.com/weixiaoyi/mcp-web-print-pdf#readme",
+  "homepage": "https://webprintpdf.com/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/weixiaoyi/mcp-web-print-pdf.git"
